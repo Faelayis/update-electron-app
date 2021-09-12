@@ -28,10 +28,10 @@ declare namespace updateElectronApp {
      */
     readonly logger?: L;
     /**
-     * @param {Boolean} notifyUser Defaults to `true`.  When enabled the user will be
-     *                             prompted to apply the update immediately after download.
+     * @param {Boolean} autoquitandInstall
+     *                             
      */
-    readonly notifyUser?: boolean;
+    readonly autoquitandInstall?: boolean;
   }
 }
 
