@@ -70,21 +70,9 @@ function initUpdater (opts) {
     log('update-not-available')
   })
 
-  if (opts.notifyUser) {
-    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateURL) => {
-      log('update-downloaded', [event, releaseNotes, releaseName, releaseDate, updateURL])
-
-      const dialogOpts = {
-        type: 'info',
-        buttons: ['Restart', 'Later'],
-        title: 'Application Update',
-        message: process.platform === 'win32' ? releaseNotes : releaseName,
-        detail: 'A new version has been downloaded. Restart the application to apply the updates.'
-      }
-
-      dialog.showMessageBox(dialogOpts).then(({ response }) => {
-        if (response === 0) autoUpdater.quitAndInstall()
-      })
+  if (opts.autoquitandInstall) {
+    autoUpdater.on('update-downloaded', () => {
+      autoUpdater.quitAndInstall()
     })
   }
 
@@ -98,9 +86,9 @@ function validateInput (opts) {
     host: 'https://update.electronjs.org',
     updateInterval: '10 minutes',
     logger: console,
-    notifyUser: true
+    autoquitandInstall: true
   }
-  const { host, updateInterval, logger, notifyUser } = Object.assign({}, defaults, opts)
+  const { host, updateInterval, logger, autoquitandInstall } = Object.assign({}, defaults, opts)
 
   // allows electron to be mocked in tests
   const electron = opts.electron || require('electron')
@@ -143,5 +131,5 @@ function validateInput (opts) {
     'function'
   )
 
-  return { host, repo, updateInterval, logger, electron, notifyUser }
+  return { host, repo, updateInterval, logger, electron, autoquitandInstall }
 }
