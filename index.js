@@ -73,6 +73,7 @@ function initUpdater (opts) {
   if (opts.autoquitandInstall) {
     autoUpdater.on('update-downloaded', () => {
       autoUpdater.quitAndInstall()
+      app.exit(0)
     })
   }
 
